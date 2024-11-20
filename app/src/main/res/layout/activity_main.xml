@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp"
+    tools:context=".MainActivity">
+
+    <!-- 헤더 영역 -->
+    <ImageView
+        android:id="@+id/logo_iv"
+        android:layout_width="64dp"
+        android:layout_height="62dp"
+        android:src="@drawable/ic_sejong"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/app_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textColor="@color/brown"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/logo_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/logo_iv"
+        android:layout_marginStart="8dp" />
+
+    <ImageView
+        android:id="@+id/setting_view"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_setting"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- 이미지/텍스트 촬영 영역 (노란색 상자 안에 텍스트 포함) -->
+    <LinearLayout
+        android:id="@+id/take_picture_view"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:background="@drawable/main_activity_view"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/logo_iv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="48dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/camera_iv"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_camera" />
+
+            <ImageView
+                android:id="@+id/right_arrow_iv"
+                android:layout_width="110dp"
+                android:layout_height="60dp"
+                android:layout_marginHorizontal="16dp"
+                android:src="@drawable/ic_right_arrow" />
+
+            <ImageView
+                android:id="@+id/hangeul_iv"
+                android:layout_width="65dp"
+                android:layout_height="65dp"
+                android:src="@drawable/ic_hangeul" />
+        </LinearLayout>
+
+        <!-- 한글 및 영어 텍스트 (노란색 상자 안에 포함) -->
+        <TextView
+            android:id="@+id/take_picture_tv_kr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/take_picture_kr"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/take_picture_tv_other_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/take_picture_en"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+
+    <!-- 단어장 영역 -->
+    <LinearLayout
+        android:id="@+id/vocabulary_view"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:background="@drawable/main_activity_view"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/take_picture_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp">
+
+        <ImageView
+            android:id="@+id/object_recognition_iv"
+            android:layout_width="79dp"
+            android:layout_height="65dp"
+            android:src="@drawable/ic_vocanote" />
+
+        <TextView
+            android:id="@+id/voca_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/vocabulary_kr"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/voca_other_language_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vocabulary_en"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 한글 퀴즈 영역 -->
+    <LinearLayout
+        android:id="@+id/hangeul_quiz"
+        android:layout_width="0dp"
+        android:layout_height="160dp"
+        android:orientation="vertical"
+        android:background="@drawable/main_activity_view"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/vocabulary_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp">
+
+        <ImageView
+            android:id="@+id/quiz_iv"
+            android:layout_width="79dp"
+            android:layout_height="65dp"
+            android:src="@drawable/ic_quiz" />
+
+        <TextView
+            android:id="@+id/quiz_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/hangeulquiz_kr"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/quiz_other_language_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hangeulquiz_en"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pProject.ganada">
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher_ganada"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_ganada_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Ganada"
+        android:usesCleartextTraffic="true">
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="ocr" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CameraActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectLanguageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ChangeLanguageActivity" />
+        <activity android:name=".InfoActivity" />
+        <activity android:name=".LearnWordActivity" />
+        <activity android:name=".PracticeWordActivity" />
+        <activity android:name=".SettingActivity" />
+        <activity android:name=".VocaBookActivity" />
+        <activity android:name=".VocaBookDetail" />
+    </application>
+
+</manifest>

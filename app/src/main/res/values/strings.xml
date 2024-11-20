@@ -1,0 +1,117 @@
+<resources>
+    <string name="app_name">세종학당</string>
+    <string name="team_name">©P-1</string>
+
+    <string name="select_language">언어 선택</string>
+    <string name="english">English</string>
+    <string name="chinese_cn">中国人</string>
+    <string name="vietnam_vn">Việt Nam</string>
+    <string name="japan_jp">日本語</string>
+    <string name="setting_up">설정하기</string>
+
+    <string name="learn_word_kr">단어 학습</string>
+    <string name="learn_word_en">(learning word)</string>
+    <string name="learn_word_cn">(单词学习)</string>
+    <string name="learn_word_vn">(học từ vựng)</string>
+    <string name="learn_word_jp">(単語学習)</string>
+
+    <string name="practice_kr">따라쓰기</string>
+    <string name="practice_en">(copy and write)</string>
+    <string name="practice_cn">(抄写)</string>
+    <string name="practice_vn">(viết theo)</string>
+    <string name="practice_jp">(書き写し)</string>
+
+    <string name="vocabulary_kr">단어장</string>
+    <string name="vocabulary_en">(voca note)</string>
+    <string name="vocabulary_cn">(词汇)</string>
+    <string name="vocabulary_vn">(ngữ vựng)</string>
+    <string name="vocabulary_jp">(言葉)</string>
+
+    <string name="hangeulquiz_kr">한글퀴즈</string>
+    <string name="hangeulquiz_en">(korean quiz)</string>
+    <string name="hanguelquiz_cn">(韩语测验)</string>
+    <string name="hanguelquiz_vn">(Đố vui tiếng Hàn)</string>
+    <string name="hanguelquiz_jp">(ハングルクイズ)</string>
+
+    <string name="setting_kr"> </string>
+    <string name="setting_en"> </string>
+    <string name="setting_cn"></string>
+    <string name="setting_vn"></string>
+    <string name="setting_jp"></string>
+
+    <string name="change_language_kr">언어 변경</string>
+    <string name="change_language_en">(change language)</string>
+    <string name="change_language_cn">(语言变更)</string>
+    <string name="change_language_vn">(thay đổi ngôn ngữ)</string>
+    <string name="change_language_jp">(言語変更)</string>
+
+    <string name="information_kr">정보</string>
+    <string name="information_en">(information)</string>
+    <string name="information_cn">(信息)</string>
+    <string name="information_vn">(thông tin)</string>
+    <string name="information_jp">(情報)</string>
+
+    <string name="information_detail_kr">다문화가정 아동을 위한\n한글 교육 모바일 앱</string>
+    <string name="information_detail_en">This is a Korean language\neducation mobile app for children\nfrom multicultural families.</string>
+    <string name="information_detail_cn">这是为多文化家庭的孩子\n准备的韩语教育手机应用程序。</string>
+    <string name="information_detail_vn">Đây là ứng dụng di động dành\ncho giáo dục tiếng Hàn dành cho\ntrẻ em trong các gia đình đa văn hóa.</string>
+    <string name="information_detail_jp">これは多文化家庭の子どもの\nための韓国語教育用モバイルアプリだ。</string>
+
+    <string name="save_word_en">단어가 저장되었습니다.\n(The word has been saved.)</string>
+    <string name="save_word_cn">단어가 저장되었습니다.\n(单词已保存 。)</string>
+    <string name="save_word_vn">단어가 저장되었습니다.\n(Từ vựng đã được lưu.)</string>
+    <string name="save_word_jp">단어가 저장되었습니다.\n(単語が保存されました。)</string>
+
+    <string name="delete_word_en">단어가 삭제되었습니다.\n(The word has been deleted.)</string>
+    <string name="delete_word_cn">단어가 삭제되었습니다.\n(单词已删除 。)</string>
+    <string name="delete_word_vn">단어가 삭제되었습니다.\n(Từ đã bị xóa.)</string>
+    <string name="delete_word_jp">단어가 삭제되었습니다.\n(単語が削除されました。)</string>
+
+    <string name="take_picture_kr">이미지/텍스트 촬영</string>
+    <string name="take_picture_en">(image/text shooting)</string>
+    <string name="take_picture_cn">(图像/文字拍摄)</string>
+    <string name="take_picture_vn">(Chụp ảnh/văn bản)</string>
+    <string name="take_picture_jp">(画像/テキスト撮影)</string>
+
+    <string name="take_photo_alert_kr">사진 촬영 시\n하나의 물체만\n찍어주세요.</string>
+    <string name="take_photo_alert_en">(When taking pictures, please take only one object.)</string>
+    <string name="take_photo_alert_cn">(拍照时，请只拍摄一个物体.)</string>
+    <string name="take_photo_alert_vn">(Khi chụp ảnh, vui lòng chỉ chụp một đối tượng.)</string>
+    <string name="take_photo_alert_jp">(写真を撮るときは、1つの物体を撮ってください.)</string>
+
+    <string name="object_recognition_kr">사물 인식</string>
+    <string name="object_recognition_en">(object\nrecognition)</string>
+    <string name="object_recognition_cn">(物体识别)</string>
+    <string name="object_recognition_vn">(Nhận dạn\nđối tượng)</string>
+    <string name="object_recognition_jp">(物事認識)</string>
+
+    <string name="text_recognition_kr">텍스트 인식</string>
+    <string name="text_recognition_en">(text\nrecognition)</string>
+    <string name="text_recognition_cn">(文字识别)</string>
+    <string name="text_recognition_vn">(nhận dạng\nvăn bản)</string>
+    <string name="text_recognition_jp">(テキスト認識)</string>
+
+    <string name="using_camera_kr">사진 촬영하기</string>
+    <string name="using_camera_en">(taking pictures)</string>
+    <string name="using_camera_cn">(正在拍照)</string>
+    <string name="using_camera_vn">(chụp ảnh)</string>
+    <string name="using_camera_jp">(写真を撮る)</string>
+
+    <string name="using_gallery_kr">앨범에서\n가져오기</string>
+    <string name="using_gallery_en">(import from photo album)</string>
+    <string name="using_gallery_cn">(从相册导入)</string>
+    <string name="using_gallery_vn">(nhập từ album ảnh)</string>
+    <string name="using_gallery_jp">(フォトアルバムからインポート)</string>
+
+    <string name="explain_ex_sentence_kr">사진에 대한 설명입니다.</string>
+    <string name="explain_ex_sentence_en">(It is an explanation of the picture.)</string>
+    <string name="explain_ex_sentence_cn">(是关于照片的说明。)</string>
+    <string name="explain_ex_sentence_vn">(Mô tả về bức ảnh)</string>
+    <string name="explain_ex_sentence_jp">(写真の説明です。)</string>
+
+    <string name="explain_recog_sentence_kr">인식된 단어를 사용한 예문입니다.</string>
+    <string name="explain_recog_sentence_en">(An example sentence containing recognized words.)</string>
+    <string name="explain_recog_sentence_cn">(包含已识别的单词的例题文章。)</string>
+    <string name="explain_recog_sentence_vn">(Câu ví dụ bao gồm các từ được nhận thức.)</string>
+    <string name="explain_recog_sentence_jp">(認識された単語を含む例題文章です。)</string>
+</resources>
