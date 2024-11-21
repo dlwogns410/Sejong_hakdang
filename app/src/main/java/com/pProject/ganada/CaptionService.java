@@ -33,7 +33,7 @@ public class CaptionService {
                     .build();
 
             RETROFIT = new Retrofit.Builder()
-                    .baseUrl("http://ipconfig:5000")
+                    .baseUrl("http://203.234.62.107:8000")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
                     .build();
