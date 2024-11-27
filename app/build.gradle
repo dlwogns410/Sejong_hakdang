@@ -56,8 +56,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     // ML Kit - 텍스트 인식 (온-디바이스)
-    implementation 'com.google.mlkit:text-recognition:17.0.0'
-    implementation 'com.google.mlkit:text-recognition-korean:17.0.0'
+    implementation 'com.google.mlkit:text-recognition:16.0.1'
+    implementation 'com.google.mlkit:text-recognition-korean:16.0.1'
     // Android 기본 라이브러리
     implementation 'androidx.appcompat:appcompat:1.4.0'
     implementation 'com.google.android.material:material:1.4.0'
