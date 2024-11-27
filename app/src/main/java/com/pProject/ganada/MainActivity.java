@@ -14,7 +14,9 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     private TextView takePictureTv, vocaTv, settingTv;
-    private View takePictureView, settingView, vocabularyView;
+    private View settingView;
+    private View vocabularyView;
+    private View quiz;
     private Dialog recognizeSelectDialog;
     private String language;
 
@@ -26,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //이미지/텍스트 촬영 클릭 리스너 -> 물체 인식인지 텍스트 인식인지 클릭하는 다이얼로그 띄우기
-        takePictureView = (View) findViewById(R.id.take_picture_view);
+        View takePictureView = (View) findViewById(R.id.take_picture_view);
         takePictureView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startVocaBookActivity();
+            }
+        });
+
+        //한글퀴즈 클릭 리스너 ->  화면으로 이동
+        quiz = (View) findViewById(R.id.hangeul_quiz);
+        quiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startQuizActivity();
             }
         });
 
@@ -182,6 +193,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void startVocaBookActivity() {
         startActivity(new Intent(this, VocaBookActivity.class));
+    }
+
+    private void startQuizActivity() {
+        startActivity(new Intent(this, Select4Q.class));
     }
 
     //LearnWordActivity 로 이동하는 함수
