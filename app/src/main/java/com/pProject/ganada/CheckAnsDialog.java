@@ -13,7 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 public class CheckAnsDialog extends Dialog {
-    private TextView txt_contents, foreignText3;
+    private TextView txt_contents, foreignText3, foreignText4, foreignText5, foreignText6, foreignText7, foreignText8;
     private Button shutdownClick;
 
     int Currentstate = 5;
@@ -31,6 +31,11 @@ public class CheckAnsDialog extends Dialog {
 
         txt_contents = findViewById(R.id.txt_contents);
         foreignText3 = findViewById(R.id.txt_contents); // 추가된 외국어 텍스트뷰
+        foreignText4 = findViewById(R.id.txt_contents); // 추가된 외국어 텍스트뷰
+        foreignText5 = findViewById(R.id.foreign_text5);
+        foreignText6 = findViewById(R.id.foreign_text5);
+        foreignText7 = findViewById(R.id.foreign_text5);
+        foreignText8 = findViewById(R.id.txt_contents);
         shutdownClick = findViewById(R.id.btn_shutdown);
         resultimg = findViewById(R.id.resultimgview);
 
@@ -40,15 +45,20 @@ public class CheckAnsDialog extends Dialog {
         SharedPreferences prefs = getContext().getSharedPreferences("Language", Context.MODE_PRIVATE);
         String language = prefs.getString("language", "english");
         setLanguageUI(language);
+        setLanguageUI2(language);
+        setLanguageUI3(language);
+        setLanguageUI4(language);
+        setLanguageUI5(language);
+        setLanguageUI6(language);
 
         if (ans == select) {  // 정답인 경우
-            shutdownClick.setText("다음으로");
+            setLanguageUI3(language);
             setLanguageUI(language);
         resultimg.setImageResource(R.drawable.great);  // 정답 이미지
         } else {  // 오답인 경우
-            txt_contents.setText("틀렸습니다. 다시 시도해보세요!");
+            setLanguageUI2(language);
             resultimg.setImageResource(R.drawable.incorrect);  // 오답 이미지로 변경
-            shutdownClick.setText("다시 시도하기");
+            setLanguageUI4(language);
         }
 
         shutdownClick.setOnClickListener(new View.OnClickListener() {
@@ -59,8 +69,9 @@ public class CheckAnsDialog extends Dialog {
 
                 // 문제 제한: Currentstate >= 5인 경우
                 if (currentState >= 5) {
-                    txt_contents.setText("모든 문제를 완료했습니다!");
-                    shutdownClick.setText("완료");
+                    setLanguageUI6(language);
+                    resultimg.setImageResource(R.drawable.fanal);
+                    setLanguageUI5(language);
 
                     // 기존 리스너 제거 후 새 리스너 설정
                     shutdownClick.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +129,111 @@ public class CheckAnsDialog extends Dialog {
                 break;
             default:
                 foreignText3.setText("");
+                break;
+        }
+    }
+
+    private void setLanguageUI2(String language) {
+        // 외국어 텍스트 업데이트
+        switch (language) {
+            case "english":
+                foreignText4.setText(getContext().getString(R.string.wrong_anwser_en));
+                break;
+            case "china":
+                foreignText4.setText(getContext().getString(R.string.wrong_anwser_cn));
+                break;
+            case "vietnam":
+                foreignText4.setText(getContext().getString(R.string.wrong_anwser_vn));
+                break;
+            case "japan":
+                foreignText4.setText(getContext().getString(R.string.wrong_anwser_jp));
+                break;
+            default:
+                foreignText4.setText("");
+                break;
+        }
+    }
+
+    private void setLanguageUI3(String language) {
+        // 외국어 텍스트 업데이트
+        switch (language) {
+            case "english":
+                foreignText5.setText(getContext().getString(R.string.next_en));
+                break;
+            case "china":
+                foreignText5.setText(getContext().getString(R.string.next_cn));
+                break;
+            case "vietnam":
+                foreignText5.setText(getContext().getString(R.string.next_vn));
+                break;
+            case "japan":
+                foreignText5.setText(getContext().getString(R.string.next_jp));
+                break;
+            default:
+                foreignText5.setText("");
+                break;
+        }
+    }
+
+    private void setLanguageUI4(String language) {
+        // 외국어 텍스트 업데이트
+        switch (language) {
+            case "english":
+                foreignText6.setText(getContext().getString(R.string.try_again_en));
+                break;
+            case "china":
+                foreignText6.setText(getContext().getString(R.string.try_again_cn));
+                break;
+            case "vietnam":
+                foreignText6.setText(getContext().getString(R.string.try_again_vn));
+                break;
+            case "japan":
+                foreignText6.setText(getContext().getString(R.string.try_again_jp));
+                break;
+            default:
+                foreignText6.setText("");
+                break;
+        }
+    }
+
+    private void setLanguageUI5(String language) {
+        // 외국어 텍스트 업데이트
+        switch (language) {
+            case "english":
+                foreignText7.setText(getContext().getString(R.string.finish_en));
+                break;
+            case "china":
+                foreignText7.setText(getContext().getString(R.string.finish_cn));
+                break;
+            case "vietnam":
+                foreignText7.setText(getContext().getString(R.string.finish_vn));
+                break;
+            case "japan":
+                foreignText7.setText(getContext().getString(R.string.finish_jp));
+                break;
+            default:
+                foreignText7.setText("");
+                break;
+        }
+    }
+
+    private void setLanguageUI6(String language) {
+        // 외국어 텍스트 업데이트
+        switch (language) {
+            case "english":
+                foreignText8.setText(getContext().getString(R.string.answer_finish_en));
+                break;
+            case "china":
+                foreignText8.setText(getContext().getString(R.string.answer_finish_cn));
+                break;
+            case "vietnam":
+                foreignText8.setText(getContext().getString(R.string.answer_finish_vn));
+                break;
+            case "japan":
+                foreignText8.setText(getContext().getString(R.string.answer_finish_jp));
+                break;
+            default:
+                foreignText8.setText("");
                 break;
         }
     }
