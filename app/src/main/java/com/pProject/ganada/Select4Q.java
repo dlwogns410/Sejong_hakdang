@@ -31,7 +31,7 @@ public class Select4Q extends AppCompatActivity {
     Button A1, A2, A3, A4, btn_check;
     ImageButton imgA1, imgA2, imgA3, imgA4;
     ImageView ans_Img;
-    TextView select4_text, foreignText, ans_word; // 한국어와 외국어 텍스트뷰
+    TextView select4_text, foreignText, ans_word, foreignText2; // 한국어와 외국어 텍스트뷰
 
     int count = 4;
     int[] a = new int[count];
@@ -51,6 +51,7 @@ public class Select4Q extends AppCompatActivity {
         // 텍스트뷰 초기화
         select4_text = findViewById(R.id.select4_text);
         foreignText = findViewById(R.id.foreign_text);
+        foreignText2 = findViewById(R.id.foreign_text2);
         ans_word = findViewById(R.id.ans_word);
 
         A1 = findViewById(R.id.Q4_ans1);
@@ -93,6 +94,7 @@ public class Select4Q extends AppCompatActivity {
         // 언어 설정
         String language = getSharedPreferences("Language", MODE_PRIVATE).getString("language", "english");
         setLanguageUI("korea", language); // 기본 언어는 한국어, 선택된 언어 추가 표시
+        setLanguagesubmit("korea", language);
 
         // 창의 투명도 설정
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -300,6 +302,29 @@ public class Select4Q extends AppCompatActivity {
                 break;
             default:
                 foreignText.setText("");
+                break;
+        }
+    }
+
+    private void setLanguagesubmit(String korean, String language) {
+        // 한국어 텍스트
+
+        // 외국어 텍스트
+        switch (language) {
+            case "english":
+                foreignText2.setText(getString(R.string.submit_answer_en));
+                break;
+            case "china":
+                foreignText2.setText(getString(R.string.submit_answer_cn));
+                break;
+            case "vietnam":
+                foreignText2.setText(getString(R.string.submit_answer_vn));
+                break;
+            case "japan":
+                foreignText2.setText(getString(R.string.submit_answer_jp));
+                break;
+            default:
+                foreignText2.setText("");
                 break;
         }
     }

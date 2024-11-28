@@ -116,16 +116,16 @@
     <string name="explain_recog_sentence_jp">(認識された単語を含む例題文章です。)</string>
 
     <string name="explain_quiz_kr">알맞은 단어 또는 그림을 고르세요.</string>
-    <string name="explain_quiz_en">\n(Choose the correct word or picture.)</string>
-    <string name="explain_quiz_cn">\n(选择正确的文字或图片。)</string>
-    <string name="explain_quiz_vn">\n(Chọn từ hoặc hình ảnh phù hợp.)</string>
-    <string name="explain_quiz_jp">\n(適切な言葉や絵を選んでください。)</string>
+    <string name="explain_quiz_en">(Choose the correct word or picture.)</string>
+    <string name="explain_quiz_cn">(选择正确的文字或图片。)</string>
+    <string name="explain_quiz_vn">(Chọn từ hoặc hình ảnh phù hợp.)</string>
+    <string name="explain_quiz_jp">(適切な言葉や絵を選んでください。)</string>
 
     <string name="submit_answer_kr">정답 제출</string>
-    <string name="submit_answer_en">(Submit your answer)</string>
-    <string name="submit_answer_cn">(提交正确答案)</string>
-    <string name="submit_answer_vn">(Gửi câu trả lời đúng)</string>
-    <string name="submit_answer_jp">(正解を提出)</string>
+    <string name="submit_answer_en">정답 제출\n(Submit your answer)</string>
+    <string name="submit_answer_cn">정답 제출\n(提交正确答案)</string>
+    <string name="submit_answer_vn">정답 제출\n(Gửi câu trả lời đúng)</string>
+    <string name="submit_answer_jp">정답 제출\n(正解を提出)</string>
 
     <string name="wrong_anwser_kr">틀렸습니다. 다시 시도해보세요!</string>
     <string name="wrong_anwser_en">(Wrong. Try again!)</string>
