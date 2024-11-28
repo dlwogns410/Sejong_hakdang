@@ -196,8 +196,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startQuizActivity() {
+        // AppValue 클래스 인스턴스 가져오기
+        AppValue appValue = (AppValue) getApplicationContext();
+
+        // 현재 문제 번호 초기화 (reset 함수는 별도 추가 필요)
+        appValue.setCurrentstate(0);  // 퀴즈 번호를 0으로 초기화하거나 필요한 값으로 설정
+
+        // Select4Q 화면으로 이동
         startActivity(new Intent(this, Select4Q.class));
     }
+
 
     //LearnWordActivity 로 이동하는 함수
     void startLearnWord(String type, Uri uri, Caption caption) {

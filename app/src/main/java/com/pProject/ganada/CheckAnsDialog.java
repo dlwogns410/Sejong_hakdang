@@ -51,37 +51,48 @@ public class CheckAnsDialog extends Dialog {  // 정답 제출 시 결과를 출
             @Override
             public void onClick(View v) {
                 AppValue appValue = (AppValue) getContext().getApplicationContext();
-                int Currentstate = appValue.getCurrentstate(); // Currentstate 가져오기
+                int currentState = appValue.getCurrentstate(); // Currentstate 가져오기
 
                 // 문제 제한: Currentstate >= 5인 경우
-                if (Currentstate >= 5) {
+                if (currentState >= 5) {
                     txt_contents.setText("모든 문제를 완료했습니다!");
                     shutdownClick.setText("완료");
-                    shutdownClick.setOnClickListener(null); // 버튼 비활성화
+
+                    // 기존 리스너 제거 후 새 리스너 설정
+                    shutdownClick.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            getContext().startActivity(intent);
+                            dismiss(); // 다이얼로그 닫기
+                        }
+                    });
                     return;
                 }
 
                 // 정답일 경우
                 if (ans == select) {
-                    int tmptry = appValue.getTry();
-                    int tmpLastscore = appValue.getLastscore();
-                    tmpLastscore = tmpLastscore - tmptry + 1;
-                    appValue.setLastscore(tmpLastscore);
+                    int tmpTry = appValue.getTry();
+                    int tmpLastScore = appValue.getLastscore();
+                    tmpLastScore = tmpLastScore - tmpTry + 1;
+                    appValue.setLastscore(tmpLastScore);
                     appValue.setTry(0);
 
-                    appValue.setCurrentstate(Currentstate + 1); // Currentstate 증가
+                    appValue.setCurrentstate(currentState + 1);
 
                     Intent intent = new Intent(getContext().getApplicationContext(), Select4Q.class);
                     intent.putExtra("stageIndex", Stagenum);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     getContext().startActivity(intent);
-                    dismiss();
-                } else {  // 오답인 경우
+                } else {  // 오답일 경우
+                    // "다시 시도하기" 버튼을 눌렀을 때, 동일한 문제로 돌아가기
                     Intent intent = new Intent(getContext().getApplicationContext(), Select4Q.class);
-                    intent.putExtra("stageIndex", Stagenum);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    getContext().startActivity(intent);
-                    dismiss();
+                    intent.putExtra("Currentstate", Current);  // 같은 문제로 돌아가기 위해 Currentstate 그대로 전달
+                    // 스테이지 정보 그대로 전달
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  // 액티비티 종료 후 새로 시작
+
+                    dismiss();  // 다이얼로그 종료
                 }
             }
         });
