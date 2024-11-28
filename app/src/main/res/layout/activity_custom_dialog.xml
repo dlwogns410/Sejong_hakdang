@@ -67,6 +67,8 @@
         android:layout_marginBottom="40dp"
         android:onClick="shutDownClick"
         android:text="다시하기"
+        android:backgroundTint="@color/light_yellow"
+        android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -115,49 +115,49 @@
     <string name="explain_recog_sentence_vn">(Câu ví dụ bao gồm các từ được nhận thức.)</string>
     <string name="explain_recog_sentence_jp">(認識された単語を含む例題文章です。)</string>
 
-    <string name="explain_quiz_kr">(알맞은 단어를 고르세요.)</string>
-    <string name="explain_quiz_en">(Choose the correct word.)</string>
-    <string name="explain_quiz_cn">(选择正确的词。)</string>
-    <string name="explain_quiz_vn">(Chọn từ đúng.)</string>
-    <string name="explain_quiz_jp">(適切な言葉を選んでください。)</string>
+    <string name="explain_quiz_kr">알맞은 단어 또는 그림을 고르세요.</string>
+    <string name="explain_quiz_en">\n(Choose the correct word or picture.)</string>
+    <string name="explain_quiz_cn">\n(选择正确的文字或图片。)</string>
+    <string name="explain_quiz_vn">\n(Chọn từ hoặc hình ảnh phù hợp.)</string>
+    <string name="explain_quiz_jp">\n(適切な言葉や絵を選んでください。)</string>
 
-    <string name="submit_answer_kr">(정답 제출)</string>
+    <string name="submit_answer_kr">정답 제출</string>
     <string name="submit_answer_en">(Submit your answer)</string>
     <string name="submit_answer_cn">(提交正确答案)</string>
     <string name="submit_answer_vn">(Gửi câu trả lời đúng)</string>
     <string name="submit_answer_jp">(正解を提出)</string>
 
-    <string name="wrong_anwser_kr">(틀렸습니다. 다시 시도해보세요!)</string>
+    <string name="wrong_anwser_kr">틀렸습니다. 다시 시도해보세요!</string>
     <string name="wrong_anwser_en">(Wrong. Try again!)</string>
     <string name="wrong_anwser_cn">(错误的。再试一次！)</string>
     <string name="wrong_anwser_vn">(Sai. Hãy thử lại!)</string>
     <string name="wrong_anwser_jp">(間違っています。もう一度お試しください！)</string>
 
-    <string name="try_again_kr">(다시 시도하기)</string>
+    <string name="try_again_kr">다시 시도하기</string>
     <string name="try_again_en">(Try again)</string>
     <string name="try_again_cn">(再试一次)</string>
     <string name="try_again_vn">(Thử lại)</string>
     <string name="try_again_jp">(もう一度やり直す)</string>
 
-    <string name="Correct_answer_kr">(정답입니다!)</string>
+    <string name="Correct_answer_kr">정답입니다!</string>
     <string name="Correct_answer_en">(That\'s correct!)</string>
     <string name="Correct_answer_cn">(没错！)</string>
     <string name="Correct_answer_vn">(Đúng rồi!)</string>
     <string name="Correct_answer_jp">(正解です！)</string>
 
-    <string name="next_kr">(다음으로)</string>
+    <string name="next_kr">다음으로</string>
     <string name="next_en">(Next)</string>
     <string name="next_cn">(下一个)</string>
     <string name="next_vn">(Kế tiếp)</string>
     <string name="next_jp">(次に)</string>
 
-    <string name="answer_finish_kr">(모든 문제를 완료했습니다!)</string>
+    <string name="answer_finish_kr">모든 문제를 완료했습니다!</string>
     <string name="answer_finish_en">(All problems completed!)</string>
     <string name="answer_finish_cn">(您已完成所有问题！)</string>
     <string name="answer_finish_vn">(Bạn đã hoàn thành tất cả các vấn đề!)</string>
     <string name="answer_finish_jp">(すべての問題を完了しました！)</string>
 
-    <string name="finish_kr">(완료)</string>
+    <string name="finish_kr">완료</string>
     <string name="finish_en">(Complete)</string>
     <string name="finish_cn">(完全的)</string>
     <string name="finish_vn">(hoàn thành)</string>

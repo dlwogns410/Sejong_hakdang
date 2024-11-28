@@ -14,13 +14,29 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="알맞은 단어를 고르세요."
+        android:text="@string/explain_quiz_kr"
         android:textAllCaps="false"
         android:textColor="#3F51B5"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/foreign_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/explain_quiz_en"
+        android:textAllCaps="false"
+        android:textColor="#3F51B5"
+        android:textSize="20sp"
+        android:textStyle="bold"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="30dp" />
 
     <Button
         android:id="@+id/btn_check"
@@ -30,6 +46,8 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="20dp"
         android:text="정답 제출"
+        android:backgroundTint="@color/light_yellow"
+        android:textColor="@color/black"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -152,5 +170,10 @@
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@id/Img_Q4_ans2"
         app:layout_constraintTop_toBottomOf="@+id/Img_Q4_ans2" />
+
+
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

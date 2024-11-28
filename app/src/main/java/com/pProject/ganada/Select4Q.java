@@ -1,7 +1,7 @@
 package com.pProject.ganada;
 
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.res.ColorStateList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,10 +31,10 @@ public class Select4Q extends AppCompatActivity {
     Button A1, A2, A3, A4, btn_check;
     ImageButton imgA1, imgA2, imgA3, imgA4;
     ImageView ans_Img;
-    TextView text, ans_word;
+    TextView select4_text, foreignText, ans_word; // 한국어와 외국어 텍스트뷰
 
     int count = 4;
-    int a[] = new int[count];
+    int[] a = new int[count];
 
     int Currentstate = 1;
     int Stagenum;
@@ -47,7 +48,11 @@ public class Select4Q extends AppCompatActivity {
         // 툴바 설정
         setupToolbar();
 
-        text = findViewById(R.id.select4_text);
+        // 텍스트뷰 초기화
+        select4_text = findViewById(R.id.select4_text);
+        foreignText = findViewById(R.id.foreign_text);
+        ans_word = findViewById(R.id.ans_word);
+
         A1 = findViewById(R.id.Q4_ans1);
         A2 = findViewById(R.id.Q4_ans2);
         A3 = findViewById(R.id.Q4_ans3);
@@ -58,18 +63,19 @@ public class Select4Q extends AppCompatActivity {
         imgA2 = findViewById(R.id.Img_Q4_ans2);
         imgA3 = findViewById(R.id.Img_Q4_ans3);
         imgA4 = findViewById(R.id.Img_Q4_ans4);
-        ans_word = findViewById(R.id.ans_word);
 
+        // QuestionType 설정 (0: 단어 선택, 1: 그림 선택)
         Random rnd = new Random();
         QuestionType = rnd.nextInt(2);
 
+        // 문제 생성
         makeQuestion();
         resetButtonColors();
         makeImg();
 
         if (QuestionType == 0) {
             ans_word.setText(wordlist[answer]);
-            text.setText("단어에 맞는 그림을 고르세요.");
+
         } else {
             A1.setVisibility(View.VISIBLE);
             A2.setVisibility(View.VISIBLE);
@@ -84,21 +90,25 @@ public class Select4Q extends AppCompatActivity {
             ans_word.setVisibility(View.INVISIBLE);
         }
 
+        // 언어 설정
+        String language = getSharedPreferences("Language", MODE_PRIVATE).getString("language", "english");
+        setLanguageUI("korea", language); // 기본 언어는 한국어, 선택된 언어 추가 표시
+
+        // 창의 투명도 설정
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.8f;
         getWindow().setAttributes(layoutParams);
 
         btn_check = findViewById(R.id.btn_check);
-        btn_check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (currenchk == 99) {
-                    Toast.makeText(getApplicationContext(), "정답을 선택하세요.", Toast.LENGTH_SHORT).show();
-                } else {
-                    customDialog = new CheckAnsDialog(view.getContext(), "[ " + wordlist[a[currenchk]] + " ]가 아닌 다른 것을 생각해봅시다.", answer, a[currenchk], Currentstate, Stagenum, -99);
-                    customDialog.show();
-                }
+        btn_check.setOnClickListener(view -> {
+            if (currenchk == 99) {
+                Toast.makeText(getApplicationContext(), "정답을 선택하세요.", Toast.LENGTH_SHORT).show();
+            } else {
+                customDialog = new CheckAnsDialog(view.getContext(),
+                        "[ " + wordlist[a[currenchk]] + " ]가 아닌 다른 것을 생각해봅시다.",
+                        answer, a[currenchk], Currentstate, Stagenum, -99);
+                customDialog.show();
             }
         });
 
@@ -108,12 +118,11 @@ public class Select4Q extends AppCompatActivity {
 
     // 툴바 설정 메서드
     private void setupToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);  // activity_select4_q.xml에 툴바 ID가 존재해야 함
+        Toolbar toolbar = findViewById(R.id.toolbar); // activity_select4_q.xml에 툴바 ID가 존재해야 함
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-            getSupportActionBar().setDisplayShowTitleEnabled(false); // 타이틀 비활성화
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back); // 뒤로가기 아이콘
         }
 
@@ -203,6 +212,8 @@ public class Select4Q extends AppCompatActivity {
         makeImg_select(imgA2, a[1]);
         makeImg_select(imgA3, a[2]);
         makeImg_select(imgA4, a[3]);
+
+
     }
 
     public void makeImg() {
@@ -265,6 +276,30 @@ public class Select4Q extends AppCompatActivity {
                 break;
             case 8:
                 imgB.setImageResource(R.drawable.chair);
+                break;
+        }
+    }
+
+    private void setLanguageUI(String korean, String language) {
+        // 한국어 텍스트
+        select4_text.setText(getString(R.string.explain_quiz_kr));
+
+        // 외국어 텍스트
+        switch (language) {
+            case "english":
+                foreignText.setText(getString(R.string.explain_quiz_en));
+                break;
+            case "china":
+                foreignText.setText(getString(R.string.explain_quiz_cn));
+                break;
+            case "vietnam":
+                foreignText.setText(getString(R.string.explain_quiz_vn));
+                break;
+            case "japan":
+                foreignText.setText(getString(R.string.explain_quiz_jp));
+                break;
+            default:
+                foreignText.setText("");
                 break;
         }
     }

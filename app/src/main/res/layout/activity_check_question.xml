@@ -56,6 +56,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:text="돌아가기"
+        android:backgroundTint="@color/light_yellow"
+        android:textColor="@color/black"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
