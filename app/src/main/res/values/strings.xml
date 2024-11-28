@@ -140,10 +140,10 @@
     <string name="try_again_jp">(もう一度やり直す)</string>
 
     <string name="Correct_answer_kr">정답입니다!</string>
-    <string name="Correct_answer_en">(That\'s correct!)</string>
-    <string name="Correct_answer_cn">(没错！)</string>
-    <string name="Correct_answer_vn">(Đúng rồi!)</string>
-    <string name="Correct_answer_jp">(正解です！)</string>
+    <string name="Correct_answer_en">정답입니다!\n(That\'s correct!)</string>
+    <string name="Correct_answer_cn">정답입니다!\n(没错！)</string>
+    <string name="Correct_answer_vn">정답입니다!\n(Đúng rồi!)</string>
+    <string name="Correct_answer_jp">정답입니다!\n(正解です！)</string>
 
     <string name="next_kr">다음으로</string>
     <string name="next_en">(Next)</string>
