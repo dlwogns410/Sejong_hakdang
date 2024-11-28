@@ -2,7 +2,9 @@ package com.pProject.ganada;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -11,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.Random;
 
@@ -20,28 +24,28 @@ public class Select4Q extends AppCompatActivity {
     private CheckAnsDialog customDialog;
 
     String[] wordlist = {"아이", "화가", "뿌리", "가수", "오리", "파도", "부모", "까치", "의자"};
-    // 단어 라벨 0-아이 1-화가 2-뿌리 3-가수 4-오리 5-파도 6-부모 7-까치 8-의자
 
-    int answer; // 문제의 답안 저장
-    int currenchk = 99; // 현재 선택한 선택지 표시
+    int answer;
+    int currenchk = 99;
     Button A1, A2, A3, A4, btn_check;
     ImageButton imgA1, imgA2, imgA3, imgA4;
     ImageView ans_Img;
     TextView text, ans_word;
-    String tmp = "";
 
-    int count = 4; // 난수 생성 갯수
+    int count = 4;
     int a[] = new int[count];
 
     int Currentstate = 1;
     int Stagenum;
-
     int QuestionType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select4_q);
+
+        // 툴바 설정
+        setupToolbar();
 
         text = findViewById(R.id.select4_text);
         A1 = findViewById(R.id.Q4_ans1);
@@ -56,17 +60,14 @@ public class Select4Q extends AppCompatActivity {
         imgA4 = findViewById(R.id.Img_Q4_ans4);
         ans_word = findViewById(R.id.ans_word);
 
-        // 문제 전처리 부분
         Random rnd = new Random();
-        QuestionType = rnd.nextInt(2); // 문제 유형
+        QuestionType = rnd.nextInt(2);
 
-        // 정답을 정하고, 보기 세 개를 정함
         makeQuestion();
-        resetButtonColors(); // 버튼 색상 초기화 추가
+        resetButtonColors();
         makeImg();
 
-        // 문제 유형에 따른 UI 설정
-        if (QuestionType == 0) { // 그림을 맞추는 유형
+        if (QuestionType == 0) {
             ans_word.setText(wordlist[answer]);
             text.setText("단어에 맞는 그림을 고르세요.");
         } else {
@@ -83,7 +84,6 @@ public class Select4Q extends AppCompatActivity {
             ans_word.setVisibility(View.INVISIBLE);
         }
 
-        // 다이얼로그 밖의 화면은 흐리게 만들어줌
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.flags = WindowManager.LayoutParams.FLAG_DIM_BEHIND;
         layoutParams.dimAmount = 0.8f;
@@ -92,35 +92,62 @@ public class Select4Q extends AppCompatActivity {
         btn_check = findViewById(R.id.btn_check);
         btn_check.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) { // 아무것도 선택하지 않고 정답을 제출하려는 경우
+            public void onClick(View view) {
                 if (currenchk == 99) {
                     Toast.makeText(getApplicationContext(), "정답을 선택하세요.", Toast.LENGTH_SHORT).show();
-                } else { // 오답을 선택한 경우
+                } else {
                     customDialog = new CheckAnsDialog(view.getContext(), "[ " + wordlist[a[currenchk]] + " ]가 아닌 다른 것을 생각해봅시다.", answer, a[currenchk], Currentstate, Stagenum, -99);
                     customDialog.show();
                 }
             }
         });
 
-        // 버튼 클릭 시 상태 관리 코드 (생략 없이 포함)
         setupAnswerButtons();
         setupImageButtons();
     }
 
+    // 툴바 설정 메서드
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);  // activity_select4_q.xml에 툴바 ID가 존재해야 함
+        setSupportActionBar(toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+            getSupportActionBar().setDisplayShowTitleEnabled(false); // 타이틀 비활성화
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back); // 뒤로가기 아이콘
+        }
+
+        // 상태바 설정
+        View view = getWindow().getDecorView();
+        if (view != null) {
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR); // 상태바 아이콘 밝게
+            getWindow().setStatusBarColor(Color.parseColor("#FFF2CC")); // 상태바 색상 변경
+        }
+    }
+
+    // 뒤로가기 버튼 클릭 처리
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Intent intent = new Intent(Select4Q.this, MainActivity.class);
+            startActivity(intent);
+            finish(); // 현재 액티비티 종료
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void resetButtonColors() {
-        // 단어 문제 버튼 초기화
         A1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
         A2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
         A3.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
         A4.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
 
-        // 그림 문제 버튼 초기화
         imgA1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
         imgA2.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
         imgA3.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
         imgA4.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.btn_nomal)));
 
-        // 현재 선택 상태 초기화
         currenchk = 99;
     }
 
@@ -153,18 +180,15 @@ public class Select4Q extends AppCompatActivity {
     public void makeQuestion() {
         Random r = new Random();
         for (int i = 0; i < count; i++) {
-            a[i] = r.nextInt(9); // 0부터 8까지의 난수 생성
-
-            // 중복 방지
+            a[i] = r.nextInt(9);
             for (int j = 0; j < i; j++) {
                 if (a[i] == a[j]) {
-                    i--; // 중복이 있으면 i를 감소시켜 다시 처리
-                    break; // 중복이 발견되면 그 즉시 반복문 종료
+                    i--;
+                    break;
                 }
             }
         }
-
-        answer = a[0]; // 정답 적어두기
+        answer = a[0];
         int k = r.nextInt(4);
         int temp = a[k];
         a[k] = a[0];
