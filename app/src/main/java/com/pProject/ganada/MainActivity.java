@@ -1,15 +1,16 @@
 package com.pProject.ganada;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.app.Dialog;  // 추가된 import
+import android.view.Window;  // 추가된 import
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,57 +22,32 @@ public class MainActivity extends AppCompatActivity {
     private String language;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // 이미지/텍스트 촬영 클릭 리스너
+        View takePictureView = findViewById(R.id.take_picture_view);
+        takePictureView.setOnClickListener(view -> startDialog());
 
-        //이미지/텍스트 촬영 클릭 리스너 -> 물체 인식인지 텍스트 인식인지 클릭하는 다이얼로그 띄우기
-        View takePictureView = (View) findViewById(R.id.take_picture_view);
-        takePictureView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startDialog();
-            }
-        });
+        // 설정 클릭 리스너
+        settingView = findViewById(R.id.setting_view);
+        settingView.setOnClickListener(view -> startSettingActivity());
 
-        //설정 클릭 리스너 -> SettingActivity 화면으로 이동
-        settingView = (View) findViewById(R.id.setting_view);
-        settingView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startSettingActivity();
-            }
-        });
+        // 단어장 클릭 리스너
+        vocabularyView = findViewById(R.id.vocabulary_view);
+        vocabularyView.setOnClickListener(view -> startVocaBookActivity());
 
-        //단어장 클릭 리스너 -> VocaBookActivity 화면으로 이동
-        vocabularyView = (View) findViewById(R.id.vocabulary_view);
-        vocabularyView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startVocaBookActivity();
-            }
-        });
-
-        //한글퀴즈 클릭 리스너 ->  화면으로 이동
-        quiz = (View) findViewById(R.id.hangeul_quiz);
-        quiz.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startQuizActivity();
-            }
-        });
-
-}
+        // 한글 퀴즈 클릭 리스너
+        quiz = findViewById(R.id.hangeul_quiz);
+        quiz.setOnClickListener(view -> startQuizActivity());
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        //sharedPreferences 에서 선택된 언어 가져오기
         language = getSharedPreferences("Language", MODE_PRIVATE).getString("language", null);
-        setLanguageUI(language);    //선택된 언어에 맞춰 TextView 의 텍스트를 설정하는 함수 호출
+        setLanguageUI(language);
     }
 
     @Override
@@ -80,12 +56,10 @@ public class MainActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    //선택된 언어에 맞춰 TextView 의 텍스트를 설정하는 함수
     private void setLanguageUI(String language) {
-
-        takePictureTv = (TextView) findViewById(R.id.take_picture_tv_other_language);
-        vocaTv = (TextView) findViewById(R.id.voca_other_language_tv);
-        settingTv = (TextView) findViewById(R.id.quiz_other_language_tv);
+        takePictureTv = findViewById(R.id.take_picture_tv_other_language);
+        vocaTv = findViewById(R.id.voca_other_language_tv);
+        settingTv = findViewById(R.id.quiz_other_language_tv);
 
         switch (language) {
             case "english":
@@ -111,49 +85,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //이미지/텍스트 촬영 다이얼로그 띄우는 함수
     private void startDialog() {
-        recognizeSelectDialog = new Dialog(this);  // Dialog 초기화
-        recognizeSelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 타이틀 제거
-        recognizeSelectDialog.setContentView(R.layout.recognize_select_dialog);    // xml 레이아웃 파일과 연결
+        recognizeSelectDialog = new Dialog(this);
+        recognizeSelectDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        recognizeSelectDialog.setContentView(R.layout.recognize_select_dialog);
         recognizeSelectDialog.show();
 
-        setDialogLanguageUI(language);  //선택된 언어에 맞춰 다이얼로그 텍스트뷰의 텍스트 언어를 설정하는 함수 호출
+        setDialogLanguageUI(language);
 
-        //물체 인식 클릭 리스너 -> 카메라 실행 로직 함수 호출
-        View objectRecognitionView = (View) recognizeSelectDialog.findViewById(R.id.object_recognition_view);
-        objectRecognitionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startBottomSheetDialog("object");   //카메라 촬영인지, 앨범 이동할건지 묻는 다이얼로그를 띄우는 함수 실행
-            }
+        View objectRecognitionView = recognizeSelectDialog.findViewById(R.id.object_recognition_view);
+        objectRecognitionView.setOnClickListener(view -> {
+            startCameraActivity("object");
         });
 
-        //텍스트 인식 클릭 리스너 -> 카메라 실행 로직 함수 호출
-        View textRecognitionView = (View) recognizeSelectDialog.findViewById(R.id.text_recognition_view);
-        textRecognitionView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startBottomSheetDialog("text");   //카메라 촬영인지, 앨범 이동할건지 묻는 다이얼로그를 띄우는 함수 실행
-            }
+        View textRecognitionView = recognizeSelectDialog.findViewById(R.id.text_recognition_view);
+        textRecognitionView.setOnClickListener(view -> {
+            startCameraActivity("text");
         });
 
-        //나가기 이미지뷰 클릭 -> 다이얼로그 닫기
-        ImageView exitIv = (ImageView) recognizeSelectDialog.findViewById(R.id.exit_iv);
-        exitIv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                recognizeSelectDialog.dismiss();
-            }
-        });
+        ImageView exitIv = recognizeSelectDialog.findViewById(R.id.exit_iv);
+        exitIv.setOnClickListener(view -> recognizeSelectDialog.dismiss());
     }
 
-    //선택된 언어에 맞춰 다이얼로그 텍스트뷰의 텍스트 언어를 설정하는 함수
     private void setDialogLanguageUI(String language) {
-
-        TextView alertTv = (TextView) recognizeSelectDialog.findViewById(R.id.alert_other_language_tv);
-        TextView objectRecognitionTv = (TextView) recognizeSelectDialog.findViewById(R.id.object_recognition_other_language_tv);
-        TextView textRecognitionTv = (TextView) recognizeSelectDialog.findViewById(R.id.text_recognition_other_language_tv);
+        TextView alertTv = recognizeSelectDialog.findViewById(R.id.alert_other_language_tv);
+        TextView objectRecognitionTv = recognizeSelectDialog.findViewById(R.id.object_recognition_other_language_tv);
+        TextView textRecognitionTv = recognizeSelectDialog.findViewById(R.id.text_recognition_other_language_tv);
 
         switch (language) {
             case "english":
@@ -179,11 +136,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //카메라 촬영인지, 앨범 이동할건지 묻는 다이얼로그를 띄우는 함수
-    private void startBottomSheetDialog(String objectType) {
-        BottomSheetDialogFragment dialogFragment = new BottomSheetDialogFragment(objectType);
-        dialogFragment.show(getSupportFragmentManager(), dialogFragment.getTag());
-
+    private void startCameraActivity(String objectType) {
+        Intent intent = new Intent(MainActivity.this, CameraActivity.class);
+        intent.putExtra("objectType", objectType);
+        startActivity(intent);
         recognizeSelectDialog.dismiss();
     }
 
@@ -196,28 +152,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startQuizActivity() {
-        // AppValue 클래스 인스턴스 가져오기
         AppValue appValue = (AppValue) getApplicationContext();
-
-        // 현재 문제 번호 초기화 (reset 함수는 별도 추가 필요)
-        appValue.setCurrentstate(0);  // 퀴즈 번호를 0으로 초기화하거나 필요한 값으로 설정
-
-        // Select4Q 화면으로 이동
+        appValue.setCurrentstate(0);
         startActivity(new Intent(this, Select4Q.class));
     }
 
-
-    //LearnWordActivity 로 이동하는 함수
     void startLearnWord(String type, Uri uri, Caption caption) {
         Intent intent = new Intent(this, LearnWordActivity.class);
-        intent.putExtra("type", type);  //사물인식인지 텍스트인식인지 확인을 위해 전달
-        intent.putExtra("uri", uri.toString()); //intent에 사진 uri 전달
-        if (caption.getKind().equals("-1"))
-            intent.putExtra("recognizedText", "");
-        else
-            intent.putExtra("recognizedText", caption.getKind());
-        intent.putExtra("exam", caption.getMessage());
+        intent.putExtra("type", type);
+        intent.putExtra("uri", uri.toString());
 
-        startActivity(intent);  //인텐트 실행
+        // 텍스트 인식과 사물 인식 결과 구분 처리
+        if ("text".equals(type)) {
+            String recognizedText = caption.getWord() != null ? caption.getWord() : "알 수 없음";
+            String example = caption.getExample() != null ? caption.getExample() : "예문 없음";
+            intent.putExtra("recognizedText", recognizedText);
+            intent.putExtra("exam", example);
+        } else if ("object".equals(type)) {
+            String recognizedText = caption.getWord() != null ? caption.getWord() : "알 수 없음";
+            String example = caption.getExample() != null ? caption.getExample() : "이미지 캡셔닝 생성 오류";
+            intent.putExtra("recognizedText", recognizedText);
+            intent.putExtra("exam", example);
+        }
+
+        startActivity(intent);
     }
 }

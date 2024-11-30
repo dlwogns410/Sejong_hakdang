@@ -1,9 +1,10 @@
 package com.pProject.ganada;
 
+import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
-
-import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
@@ -48,25 +49,13 @@ public class CaptionService {
         this.captionView = captionView;
     }
 
-    public void test() {
-        getCaptionRetrofitInterface().test().enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Log.d("CaptionService", "test: " + response.body().toString());
-                } else {
-                    Log.e("CaptionService", "Test failed with code: " + response.code() + ", message: " + response.message());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e("CaptionService", "test ERROR: " + t.toString());
-            }
-        });
-    }
-
     public void getPictureCaption(File photoFile) {
+        if (!photoFile.exists()) {
+            Log.e("CaptionService", "File does not exist: " + photoFile.getAbsolutePath());
+            captionView.onCaptionError("File does not exist");
+            return;
+        }
+
         MultipartBody.Part file = getImageMultipartBody(photoFile);
 
         getCaptionRetrofitInterface().pictureCaption(file).enqueue(new Callback<Caption>() {
@@ -74,51 +63,102 @@ public class CaptionService {
             public void onResponse(Call<Caption> call, Response<Caption> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     Caption caption = response.body();
-                    Log.d("CaptionService", "getPictureCaption - kind: " + caption.getKind() + ", message: " + caption.getMessage());
+                    Log.d("CaptionService", "Picture Caption Response: " + caption.toString());
                     captionView.onCaptionSuccess(Uri.fromFile(photoFile), caption);
                 } else {
-                    Log.e("CaptionService", "getPictureCaption failed with code: " + response.code() + ", message: " + response.message());
+                    Log.e("CaptionService", "Picture Caption Error Response: " + response.message());
+                    captionView.onCaptionError("Invalid picture response: " + response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<Caption> call, Throwable t) {
                 Log.e("CaptionService", "getPictureCaption ERROR: " + t.toString());
+                captionView.onCaptionError("Picture caption failed: " + t.getMessage());
+            }
+        });
+    }
+
+    public void getTextCaption(File photoFile) {
+        if (!photoFile.exists()) {
+            Log.e("CaptionService", "File does not exist: " + photoFile.getAbsolutePath());
+            captionView.onCaptionError("File does not exist");
+            return;
+        }
+
+        MultipartBody.Part file = getImageMultipartBody(photoFile);
+
+        getCaptionRetrofitInterface().textRecognition(file).enqueue(new Callback<Caption>() {
+            @Override
+            public void onResponse(Call<Caption> call, Response<Caption> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Caption caption = response.body();
+                    Log.d("CaptionService", "Text Caption Response: " + caption.toString());
+                    captionView.onCaptionSuccess(Uri.fromFile(photoFile), caption);
+                } else {
+                    Log.e("CaptionService", "Text Caption Error Response: " + response.message());
+                    captionView.onCaptionError("Invalid text response: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Caption> call, Throwable t) {
+                Log.e("CaptionService", "getTextCaption ERROR: " + t.toString());
+                captionView.onCaptionError("Text caption failed: " + t.getMessage());
             }
         });
     }
 
     public void getGalleryCaption(Uri uri) {
-        File file = new File(uri.getPath());  // 수정: Uri 경로에서 File 생성
+        String filePath = getRealPathFromURI(uri);
+        if (filePath == null) {
+            Log.e("CaptionService", "Invalid Uri: " + uri);
+            captionView.onCaptionError("Invalid Uri");
+            return;
+        }
+
+        File file = new File(filePath);
+        if (!file.exists()) {
+            Log.e("CaptionService", "File does not exist: " + filePath);
+            captionView.onCaptionError("File does not exist for the given Uri.");
+            return;
+        }
+
         MultipartBody.Part photoFile = getImageMultipartBody(file);
 
         getCaptionRetrofitInterface().galleryCaption(photoFile).enqueue(new Callback<Caption>() {
             @Override
             public void onResponse(Call<Caption> call, Response<Caption> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Caption caption = response.body();
-                    Log.d("CaptionService", "getGalleryCaption - kind: " + caption.getKind() + ", message: " + caption.getMessage());
-                    captionView.onCaptionSuccess(uri, caption);
+                    captionView.onCaptionSuccess(uri, response.body());
                 } else {
-                    Log.e("CaptionService", "getGalleryCaption failed with code: " + response.code() + ", message: " + response.message());
+                    captionView.onCaptionError("Gallery Caption Error: " + response.message());
                 }
             }
 
             @Override
             public void onFailure(Call<Caption> call, Throwable t) {
-                Log.e("CaptionService", "getGalleryCaption ERROR: " + t.toString());
+                captionView.onCaptionError("Gallery Caption Failed: " + t.getMessage());
             }
         });
     }
 
-    private MultipartBody.Part getImageMultipartBody(File photoFile) {
-        if (!photoFile.exists()) {
-            Log.e("CaptionService", "File does not exist: " + photoFile.getPath());
-            return null;
+    private MultipartBody.Part getImageMultipartBody(File file) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+        return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+    }
+
+    private String getRealPathFromURI(Uri uri) {
+        String[] projection = {MediaStore.Images.Media.DATA};
+        Context context = ((Context) captionView);
+        try (Cursor cursor = context.getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                return cursor.getString(columnIndex);
+            }
+        } catch (Exception e) {
+            Log.e("CaptionService", "Error getting real path from URI", e);
         }
-
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), photoFile);
-
-        return MultipartBody.Part.createFormData("file", photoFile.getName(), requestFile);
+        return null;
     }
 }

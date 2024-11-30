@@ -9,7 +9,6 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:8.0.2" // Android Gradle Plugin
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // Kotlin Gradle Plugin
-        classpath "com.google.gms:google-services:4.4.2"  // Google Services 플러그인 추가
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }

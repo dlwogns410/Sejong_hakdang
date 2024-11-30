@@ -18,18 +18,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.common.util.concurrent.ListenableFuture;
-import com.google.mlkit.vision.common.InputImage;
-import com.google.mlkit.vision.text.Text;
-import com.google.mlkit.vision.text.TextRecognition;
-import com.google.mlkit.vision.text.TextRecognizer;
-import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
@@ -62,18 +55,18 @@ public class CameraActivity extends AppCompatActivity implements CaptionView {
         previewView = (PreviewView) findViewById(R.id.viewFinder);
 
         outputFile = getOutputDirectory();
-        startCamera();  //카메라 실행
+        startCamera(); // 카메라 실행
 
         captureBtn = (ImageButton) findViewById(R.id.camera_capture_btn);
         captureBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takePhoto();    //사진 찍기 함수 호출
+                takePhoto(); // 사진 찍기 함수 호출
             }
         });
     }
 
-    //카메라 실행 함수
+    // 카메라 실행 함수
     public void startCamera() {
         ListenableFuture<ProcessCameraProvider> cameraProviderListenableFuture = ProcessCameraProvider.getInstance(this);
         imageCapture = new ImageCapture.Builder().build();
@@ -100,9 +93,9 @@ public class CameraActivity extends AppCompatActivity implements CaptionView {
         cameraProvider.bindToLifecycle((LifecycleOwner) this, cameraSelector, preview, imageCapture);
     }
 
-    //사진 찍기 함수
+    // 사진 찍기 함수
     private void takePhoto() {
-        //찍힌 사진을 저장할 파일 생성
+        // 찍힌 사진을 저장할 파일 생성
         File photoFile = new File(
                 outputFile,
                 new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS", Locale.KOREA).format(System.currentTimeMillis()) + ".jpg"
@@ -113,26 +106,26 @@ public class CameraActivity extends AppCompatActivity implements CaptionView {
         imageCapture.takePicture(outputOptions, ContextCompat.getMainExecutor(this),
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
-                    public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) {    //사진 찍기 성공
+                    public void onImageSaved(ImageCapture.OutputFileResults outputFileResults) { // 사진 찍기 성공
                         onCaptionLoading();
 
-                        if (objectType.equals("text")) {    //텍스트 인식
-                            Uri savedUri = Uri.fromFile(photoFile); //file -> Uri 변경
-                            extractText(savedUri);
+                        if ("text".equals(objectType)) { // 텍스트 인식
+                            captionService.getTextCaption(photoFile); // 서버로 텍스트 인식 요청
                         } else {
-                            captionService.getPictureCaption(photoFile);    //물체 인식
+                            captionService.getPictureCaption(photoFile); // 물체 인식
                         }
                     }
 
                     @Override
-                    public void onError(ImageCaptureException error) {  //사진 찍기 오류
-                        Log.e("CameraActivity", error.toString());
+                    public void onError(ImageCaptureException error) { // 사진 찍기 오류
+                        Log.e("CameraActivity", "Image capture error: " + error.getMessage());
+                        onCaptionError("Image capture error: " + error.getMessage());
                     }
                 }
         );
     }
 
-    //사진 저장할 디렉토리 생성 or 가져오기
+    // 사진 저장할 디렉토리 생성 or 가져오기
     private File getOutputDirectory() {
         File mediaDir = this.getFilesDir();
 
@@ -141,44 +134,12 @@ public class CameraActivity extends AppCompatActivity implements CaptionView {
         } else {
             return getFilesDir();
         }
-
-    }
-
-    //ML Kit 를 활용해 이미지 속에 있는 텍스트를 인식해 추출하는 함수
-    public void extractText(Uri uri) {
-        Log.d("CameraActivity", "extractText");
-
-        try {
-            InputImage image = InputImage.fromFilePath(getApplicationContext(), uri);
-
-            TextRecognizer recognizer =
-                    TextRecognition.getClient(new KoreanTextRecognizerOptions.Builder().build());
-
-            recognizer.process(image)
-                    .addOnSuccessListener(new OnSuccessListener<Text>() {
-                        @Override
-                        public void onSuccess(Text visionText) {
-                            Caption caption = new Caption();
-                            caption.setKind(visionText.getText());
-                            exampleParsingService.getExample(uri, caption);
-                        }
-                    })
-                    .addOnFailureListener(
-                            new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    e.printStackTrace();
-                                }
-                            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void onCaptionLoading() {
         progressDialog = new ProgressDialog(this);
-        //로딩창을 투명하게
+        // 로딩창을 투명하게
         progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         progressDialog.show();
     }
@@ -186,15 +147,34 @@ public class CameraActivity extends AppCompatActivity implements CaptionView {
     @Override
     public void onCaptionSuccess(Uri uri, Caption caption) {
         Intent intent = new Intent(this, LearnWordActivity.class);
-        intent.putExtra("type", objectType);  //사물인식인지 텍스트인식인지 확인을 위해 전달
-        intent.putExtra("uri", uri.toString()); //intent에 사진 uri 전달
-        if (caption.getKind().equals("-1"))
-            intent.putExtra("recognizedText", "");
-        else
-            intent.putExtra("recognizedText", caption.getKind());
-        intent.putExtra("exam", caption.getMessage());
-        startActivity(intent);  //인텐트 실행
+        intent.putExtra("type", objectType); // 사물인식인지 텍스트인식인지 확인을 위해 전달
+        intent.putExtra("uri", uri.toString()); // intent에 사진 uri 전달
 
+        // 텍스트 인식과 사물 인식 결과 구분 처리
+        if ("text".equals(objectType)) {
+            String recognizedText = caption.getWord();
+            String example = caption.getExample();
+            intent.putExtra("recognizedText", recognizedText);
+            intent.putExtra("exam", example);
+        } else if ("object".equals(objectType)) {
+            String recognizedKind = caption.getKind() != null ? caption.getKind() : "알 수 없음";
+            String message = caption.getMessage() != null ? caption.getMessage() : "예문 없음";
+            intent.putExtra("recognizedText", recognizedKind);
+            intent.putExtra("exam", message);
+        }
+
+        startActivity(intent); // 인텐트 실행
         progressDialog.dismiss();
+    }
+
+    @Override
+    public void onCaptionError(String errorMessage) {
+        // 오류 처리 로직
+        Toast.makeText(this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
+        Log.e("CameraActivity", "onCaptionError: " + errorMessage);
+
+        if (progressDialog != null && progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
     }
 }

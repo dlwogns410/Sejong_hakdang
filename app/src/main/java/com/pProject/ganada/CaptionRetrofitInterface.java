@@ -19,6 +19,10 @@ public interface CaptionRetrofitInterface {
     @POST("/gallery-caption")
     Call<Caption> galleryCaption(@Part MultipartBody.Part file);
 
+    @Multipart
+    @POST("/text-recognition") // 경로를 수정했습니다.
+    Call<Caption> textRecognition(@Part MultipartBody.Part file);
+
     @GET("/test-api")
     Call<JsonObject> test();
 }

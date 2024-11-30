@@ -164,5 +164,31 @@
     <string name="finish_jp">완료\n(完了)</string>
 
 
+    <string name="save_word">단어가 저장되었습니다.</string>
+    <string name="delete_word">단어가 삭제되었습니다.</string>
+
+
+    <string name="error_no_caption_data">No caption data received from server.</string>
+
+    <string name="error_missing_data">필수 데이터가 누락되었습니다. 다시 시도하세요.</string>
+
+    <string name="error_taking_photo">사진 촬영 중 오류가 발생했습니다.</string>
+
+    <string name="error_caption_service">캡션 처리 중 오류가 발생했습니다.</string>
+    <string name="back_button_desc">뒤로가기</string>
+    <string name="word_pronunciation_desc">단어 발음 듣기</string>
+    <string name="sentence_pronunciation_desc">문장 발음 듣기</string>
+    <string name="bookmark_desc">북마크</string>
+    <string name="image_desc">단어 이미지</string>
+    <string name="practice_icon_desc">따라쓰기</string>
+        <string name="default_word">단어</string>
+        <string name="default_sentence">예문을 여기에 표시</string>
+
+
+
+
+
+
+
 
 </resources>

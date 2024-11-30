@@ -6,6 +6,13 @@ import android.util.Log;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,33 +21,52 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ExampleParsingService {
 
+    private static Retrofit RETROFIT;
+
     private CaptionView captionView;
 
-    void setCaptionView(CaptionView captionView) {
+    public static Retrofit getRetrofit() {
+        if (RETROFIT == null) {
+            OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                    .connectTimeout(1, TimeUnit.MINUTES)
+                    .readTimeout(1, TimeUnit.MINUTES)
+                    .writeTimeout(1, TimeUnit.MINUTES)
+                    .build();
+
+            RETROFIT = new Retrofit.Builder()
+                    .baseUrl("https://opendict.korean.go.kr/api/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(okHttpClient)
+                    .build();
+        }
+        return RETROFIT;
+    }
+
+    public static ExampleParsingRetrofitInterface getExampleRetrofitInterface() {
+        return getRetrofit().create(ExampleParsingRetrofitInterface.class);
+    }
+
+    public void setCaptionView(CaptionView captionView) {
         this.captionView = captionView;
     }
 
-    Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://opendict.korean.go.kr/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
-
-    ExampleParsingRetrofitInterface service = retrofit.create(ExampleParsingRetrofitInterface.class);
-
-    void getExample(Uri uri, Caption caption) {
+    public void getExample(Uri uri, Caption caption) {
         String word = caption.getKind();
 
-        service.getExample(word).enqueue(new Callback<JsonObject>() {
+        getExampleRetrofitInterface().getExample(word).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                JsonObject jsonObject = response.body();
-                JsonObject wordInfoResult = jsonObject.getAsJsonObject("channel");  // key가 wordInfoResult인 value를 추출하기 위해서 get()을 사용
-                JsonArray wordInfo = wordInfoResult.getAsJsonArray("item"); // key와  value안에 또다시 JSON이 존재 -> Array 형태
-                String exam = wordInfo.get(0).getAsJsonObject().get("example").toString();  // 그렇게 얻은 데이터에서 마지막으로 key가 wordInfo인 value를 JSONObject에 다시 넣어주기
-                exam = exam.replaceAll("\\\"", "");  //큰따옴표 제거
-                caption.setMessage(exam);
-
-                captionView.onCaptionSuccess(uri, caption);
+                if (response.code() == 200) {
+                    JsonObject jsonObject = response.body();
+                    JsonObject wordInfoResult = jsonObject.getAsJsonObject("channel");
+                    JsonArray wordInfo = wordInfoResult.getAsJsonArray("item");
+                    String exam = wordInfo.get(0).getAsJsonObject().get("example").toString();
+                    exam = exam.replaceAll("\\\"", "");
+                    caption.setMessage(exam);
+                    captionView.onCaptionSuccess(uri, caption);
+                } else {
+                    Log.e("ExampleParsingService", "getExample fail code: " + response.message());
+                }
             }
 
             @Override
@@ -48,5 +74,11 @@ public class ExampleParsingService {
                 Log.d("ExampleParsingService", "getExample error: " + t.toString());
             }
         });
+    }
+
+    private MultipartBody.Part getImageMultipartBody(Uri uri) {
+        File file = new File(uri.getPath());
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
+        return MultipartBody.Part.createFormData("file", file.getName(), requestFile);
     }
 }
